@@ -1,3 +1,26 @@
+
+
+<script>
+let input;
+let image;
+
+function onChange() {
+    const file = input.files[0];
+		
+    if (file) {
+      const reader = new FileReader();
+      reader.addEventListener("load", function () {
+        image.setAttribute("src", reader.result);
+      });
+      reader.readAsDataURL(file);
+			
+			return;
+    } 
+  }
+</script>
+
+
+
 <div class="header">
     <div>
         <h1>Share Your offer</h1>
@@ -5,7 +28,7 @@
     <div>
         <form >
             <label for="city">City: </label>
-            <input type="text" name="city" id="city" placeholder="e.g Boston">
+            <input type="text" name="city" id="city" placeholder="e.g Boston" >
             <br>
             <label for="state"> State: </label>
             <input type="text" name="state" id="state" placeholder="e.g Massachusetts">
@@ -14,9 +37,12 @@
             <input type="text" name="country" placeholder="USA">
             <br> 
             <label for="image">Photo:</label>
-            <input type="file" name="image" accept=".png, .jpg, .jpeg">
+            <input type="file" name="image" accept=".png, .jpg, .jpeg" on:change={onChange} bind:this={input} >
             <br>
             <button type="submit">Submit</button>
+            <div class="image-preview">
+                <img bind:this={image} alt="offer" width="150" height="150">
+            </div>
         </form>
     </div>
 </div>
@@ -47,5 +73,11 @@
     }
     button {
         margin: 0 auto;
+    }
+    .image-preview {
+        width: 150px;
+        height: 150px;
+        border: 1px solid white;
+        margin: .5em auto 0 auto;
     }
 </style>
