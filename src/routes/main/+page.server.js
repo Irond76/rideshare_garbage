@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3';
 
 
-function createAndConnectToDatabase () {
+async function createAndConnectToDatabase () {
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database('./src/data/rideshare.db', sqlite3.OPEN_CREATE | sqlite3.OPEN_READWRITE, (err) => {
             if (err) {
@@ -13,7 +13,7 @@ function createAndConnectToDatabase () {
         resolve(db);
     });
 };
-function getAllRows(db, query, params = []) {
+async function getAllRows(db, query, params = []) {
     return new Promise((resolve, reject) => {
         db.all(query, params, (err, rows) => {
             if (err) {
@@ -25,7 +25,7 @@ function getAllRows(db, query, params = []) {
     });
 }
 
-function createTableIfNotExist(db, query, params = []) {
+async function createTableIfNotExist(db, query, params = []) {
     return new Promise((resolve, reject) => {
         db.run(query, params, function (err) {
             if (err) {
@@ -53,7 +53,7 @@ export async function load() {
     `);
         const offers = await getAllRows(db, 'SELECT * FROM offers');
     
-        const offersWithBase64Images = offers.map(offer => {
+        const offersWithBase64Images = await offers.map(offer => {
             if (offer.image) {
                 offer.image = offer.image.toString('base64');
             }

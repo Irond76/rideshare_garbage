@@ -4,7 +4,7 @@ import { redirect } from '@sveltejs/kit';
 
 
 
-function createAndConnectToDatabase () {
+async function createAndConnectToDatabase () {
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database('./src/data/rideshare.db', sqlite3.OPEN_READWRITE, (err) => {
             if (err) {
@@ -16,7 +16,7 @@ function createAndConnectToDatabase () {
         resolve(db);
     });
 };
-function runQuery(db, query, params = []) {
+async function runQuery(db, query, params = []) {
     return new Promise((resolve, reject) => {
         db.run(query, params, function (err) {
             if (err) {
@@ -36,10 +36,10 @@ export const actions = {
        
         const db = await createAndConnectToDatabase();
         const data = await request.formData();
-        const city = data.get('city');
-        const state = data.get('state');
-        const country = data.get('country');
-        const myImage = data.get('image');
+        const city = await data.get('city');
+        const state = await data.get('state');
+        const country = await data.get('country');
+        const myImage = await data.get('image');
         
         try {
             
