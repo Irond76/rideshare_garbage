@@ -1,5 +1,5 @@
 node_modules
-**/data/rideshare.db
+rideshare_garbage\src\data\rideshare.db
 # Output
 .output
 .vercel
