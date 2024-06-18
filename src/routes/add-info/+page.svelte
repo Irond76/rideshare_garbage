@@ -4,29 +4,37 @@
 let input;
 let image;
 
-function onChange() {
-    const file = input.files[0];
-		
+
+
+
+async function onChange() {
+    const file =  await input.files[0];
+    
     if (file) {
-      const reader = new FileReader();
-      reader.addEventListener("load", function () {
-        image.setAttribute("src", reader.result);
-      });
-      reader.readAsDataURL(file);
+        const reader = new FileReader();
+        reader.addEventListener("load", function () {
+            image.setAttribute("src", reader.result);
+        });
+        reader.readAsDataURL(file);
+       
 			
-			return;
+
+      return;
     } 
-  }
+}
+
+
+function base64ToDataUrl(base64) {
+        return `data:image/jpeg;base64,${base64}`;
+    }
 </script>
-
-
 
 <div class="header">
     <div>
         <h1>Share Your offer</h1>
     </div>
     <div>
-        <form >
+        <form method="POST" enctype="multipart/form-data">
             <label for="city">City: </label>
             <input type="text" name="city" id="city" placeholder="e.g Boston" >
             <br>
@@ -34,12 +42,12 @@ function onChange() {
             <input type="text" name="state" id="state" placeholder="e.g Massachusetts">
             <br>
             <label for="country">Country: </label>
-            <input type="text" name="country" placeholder="USA">
+            <input type="text" name="country" placeholder="USA" value="USA">
             <br> 
             <label for="image">Photo:</label>
-            <input type="file" name="image" accept=".png, .jpg, .jpeg" on:change={onChange} bind:this={input} >
+            <input type="file" name="image" accept=".png, .jpg, .jpeg" on:change={onChange} bind:this={input} value="">
             <br>
-            <button type="submit">Submit</button>
+            <button type="submit" >Submit</button>
             <div class="image-preview">
                 <img bind:this={image} alt="offer" width="150" height="150">
             </div>

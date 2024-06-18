@@ -13,6 +13,17 @@ function createAndConnectToDatabase () {
         resolve(db);
     });
 };
+function getAllRows(db, query, params = []) {
+    return new Promise((resolve, reject) => {
+        db.all(query, params, (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+}
 
 function createTableIfNotExist(db, query, params = []) {
     return new Promise((resolve, reject) => {
@@ -37,7 +48,18 @@ export async function load() {
             city STRING  NOT NULL,
             state STRING  NOT NULL,
             country STRING NOT NULL,
-            image STRING NOT NULL
+            image BLOB NOT NULL
         )
     `);
-};
+        const offers = await getAllRows(db, 'SELECT * FROM offers');
+    
+        const offersWithBase64Images = offers.map(offer => {
+            if (offer.image) {
+                offer.image = offer.image.toString('base64');
+            }
+            return offer;
+        });
+        return {
+            myData: offersWithBase64Images
+        };
+    };
